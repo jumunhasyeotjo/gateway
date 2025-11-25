@@ -30,7 +30,6 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(bytes);
     }
 
-    /** Authorization 헤더에서 Bearer 토큰 추출 */
     public String resolveToken(ServerHttpRequest request) {
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
@@ -41,15 +40,6 @@ public class JwtProvider {
         return authHeader.substring(BEARER_PREFIX.length());
     }
 
-    /** Bearer 제거 메서드 (Auth와 호환) */
-    public String removePrefix(String token) {
-        if (token != null && token.startsWith(BEARER_PREFIX)) {
-            return token.substring(BEARER_PREFIX.length());
-        }
-        return token;
-    }
-
-    /** JWT 검증 */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -57,7 +47,6 @@ public class JwtProvider {
                 .build()
                 .parseClaimsJws(token);
             return true;
-
         } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature.");
         } catch (ExpiredJwtException e) {
@@ -71,22 +60,11 @@ public class JwtProvider {
         return false;
     }
 
-    /** Claims 추출 */
     public Claims getClaims(String token) {
         return Jwts.parserBuilder()
             .setSigningKey(key)
             .build()
             .parseClaimsJws(token)
             .getBody();
-    }
-
-    /** subject(name) 추출 */
-    public String getSubject(String token) {
-        return getClaims(token).getSubject();
-    }
-
-    /** role 추출 */
-    public String getRole(String token) {
-        return getClaims(token).get("role", String.class);
     }
 }
