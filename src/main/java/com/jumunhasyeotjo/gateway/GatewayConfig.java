@@ -15,6 +15,14 @@ public class GatewayConfig {
                 .path("/v1/auth/**", "/v1/users/**", "/v1/messages/**", "/v1/passports/**")
                 .uri("lb://user-service")
             )
+            .route("user-service-actuator", r -> r
+                .path("/monitoring/user-service/actuator/**")
+                .filters(f -> f.rewritePath(
+                    "/monitoring/user-service/(?<segment>.*)",
+                    "/${segment}"
+                ))
+                .uri("lb://user-service")
+            )
             .route("order-shipping-service", r -> r
                 .path("/v1/orders/**", "/v1/shippings/**")
                 .uri("lb://order-shipping-service")

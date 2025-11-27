@@ -27,7 +27,7 @@ public class SecurityConfig {
             .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
             .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
             .authorizeExchange(ex -> ex
-                .pathMatchers("/v1/auth/**", "/actuator/health").permitAll()
+                .pathMatchers("/v1/auth/**", "/actuator/**", "/monitoring/**").permitAll()
                 .anyExchange().authenticated()
             )
             .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
