@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter implements WebFilter {
                         List.of(new SimpleGrantedAuthority(role))
                     );
 
-
+                log.info("Passport : " + response.passport());
                 exchange.getRequest().getHeaders().add("X-Passport", response.passport());
 
                 return chain.filter(exchange)
