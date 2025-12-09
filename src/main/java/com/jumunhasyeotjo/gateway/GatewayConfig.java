@@ -12,7 +12,7 @@ public class GatewayConfig {
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
             .route("user-service", r -> r
-                .path("/v1/auth/**", "/v1/users/**", "/v1/messages/**", "/v1/passports/**")
+                .path("/api/v1/auth/**", "/api/v1/users/**", "/api/v1/messages/**", "/api/v1/passports/**")
                 .uri("lb://user-service")
             )
             .route("user-service-actuator", r -> r
@@ -24,7 +24,7 @@ public class GatewayConfig {
                 .uri("lb://user-service")
             )
             .route("order-shipping-service", r -> r
-                .path("/v1/orders/**", "/v1/shippings/**")
+                .path("/api/v1/orders/**", "/api/v1/coupons/**", "/api/v1/shippings/**", "/api/v1/payments/**", "/api/v1/shipping-histories/**")
                 .uri("lb://order-shipping-service")
             )
             .route("hub-product-stock-company", r -> r

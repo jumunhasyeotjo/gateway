@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter implements WebFilter {
                 uriBuilder
                     .scheme("lb")
                     .host("user-service")
-                    .path("/v1/passports")
+                    .path("/api/v1/passports")
                     .queryParam("jwt", BearerToken)
                     .build()
             )
