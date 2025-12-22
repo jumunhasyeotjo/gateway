@@ -5,6 +5,7 @@ import com.jumunhasyeotjo.gateway.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -23,10 +24,12 @@ public class SecurityConfig {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider, webClientBuilder);
         return http
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .cors(ServerHttpSecurity.CorsSpec::disable)
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
             .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
             .authorizeExchange(ex -> ex
+                .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/api/v1/auth/**", "/actuator/**", "/monitoring/**").permitAll()
                 .anyExchange().authenticated()
             )
